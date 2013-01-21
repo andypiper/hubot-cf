@@ -1,0 +1,19 @@
+{
+  "name": "hubot-cf",
+  "version": "0.0.1",
+  "description": "Some useful Cloud Foundry scripts for hubot",
+  "main": "index.coffee",
+  "author": "Andy Piper <andypiperuk@gmail.com> (http://andypiper.co.uk)",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/andypiper/hubot-cf"
+  },  "licenses":
+   { "type": "Apache",
+     "url": "http://www.apache.org/licenses/LICENSE-2.0" },
+  "dependencies": {
+    "coffee-script": "~> 1.4.0"
+  },
+  "keywords": [ 'cloudfoundry', 'cloud', 'vcap' ],
+  "license": "Apache 2",
+  "readmeFilename": "README.md"
+}
