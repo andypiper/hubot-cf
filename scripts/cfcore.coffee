@@ -40,4 +40,3 @@ module.exports = (robot) ->
 # add additional operations
 # - list runtimes on core
 # - .com platform status
-# - get last tweet from @cloudfoundry
