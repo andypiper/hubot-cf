@@ -27,9 +27,9 @@ module.exports = (robot) ->
                 try
                   json = JSON.parse(body)
                   msg.send "   CF Core Name: #{json.description}\n
-             product: #{json.name}\n
-             version: #{json.version}\n
-               build: #{json.build}\n"
+      product: #{json.name}\n
+      version: #{json.version}\n
+        build: #{json.build}\n"
                 catch error
                   msg.send "Insufficient JSON ninjas available"
             else
