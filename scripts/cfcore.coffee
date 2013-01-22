@@ -8,7 +8,7 @@
 #   None
 #
 # Commands:
-#   hubot cf core <base URI> - Returns Cloud Controller information for API endpoint
+#   hubot cf-core <base URI> - Returns Cloud Controller information for API endpoint
 #
 # Notes:
 #   None
@@ -18,7 +18,7 @@
 #
 
 module.exports = (robot) ->
-  robot.respond /cf core (.*)/i, (msg) ->
+  robot.respond /cf-core (.*)/i, (msg) ->
     apiEndpoint = escape(msg.match[1])
     msg.http("http://#{apiEndpoint}/info")
       .get() (err, res, body) ->

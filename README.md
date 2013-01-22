@@ -6,11 +6,11 @@ Adds a number of (hopefully) helpful [Cloud Foundry](http://cloudfoundry.org)-re
 
 Return CF Core information about the specified *API endpoint* 
     
-    hubot cf core <API endpoint>        
+    hubot cf-core <API endpoint>        
 
 Return the most recent tweet from the [@cloudfoundry Twitter account](http://twitter.com/cloudfoundry)
 
-    hubot cf tweet
+    hubot cf-tweet
 
 (more commands coming soon)
 
