@@ -1,20 +1,20 @@
 ## Hubot Cloud Foundry helpers 
 
-###  Adds a number of (hopefully) helpful [Cloud Foundry](http://cloudfoundry.org)-related status commands to [hubot](http://hubot.github.com)
+Adds a number of (hopefully) helpful [Cloud Foundry](http://cloudfoundry.org)-related status commands to [hubot](http://hubot.github.com)
 
 #### Commands:
 
 Return CF Core information about the specified *API endpoint* 
     
-    hubot cf core <API endpoint>
+    hubot cf core <API endpoint>        
+
+Return the most recent tweet from the [@cloudfoundry Twitter account](http://twitter.com/cloudfoundry)
+
+    hubot cf tweet
 
 (more commands coming soon)
 
 #### Installation:
-
-**Script method**
-
-```curl|wget https://github.com/andypiper/hubot-cf/raw/master/src/scripts/cf.coffee``` to your hubot installation's ```scripts``` directory.
 
 **npm module method**
 
@@ -22,11 +22,11 @@ In your deployed ```hubot``` directory:
 
     npm install hubot-cf
 
-Add an entry for ```hubot-cf``` to the ```external-scripts.json``` file (you may need to create this file if it is not present):
+Add an entry for ```hubot-cf``` to the ```external-scripts.json``` file (you may need to create this file, if it is not present):
 
     ["hubot-cf"]
     
-… and run hubot as normal.
+Run hubot as normal, and the scripts should become available.
 
 #### License:
 
@@ -36,3 +36,7 @@ Apache 2: http://www.apache.org/licenses/LICENSE-2.0.html
 
  * [cloudfoundry on Github](http://github.com/cloudfoundry)
  * [hubot](http://hubot.github.com)
+
+#### Love it/hate it/ideas?
+
+Tweet [@andypiper](http://twitter.com/andypiper) or open an issue on the Github Issue Tracker.
