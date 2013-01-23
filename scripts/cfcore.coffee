@@ -1,5 +1,5 @@
 # Description
-#   Some handy Cloud Foundry-related functions for hubot
+#   Useful Cloud Foundry Core-related functions for hubot
 #
 # Dependencies:
 #   None
@@ -23,20 +23,18 @@ module.exports = (robot) ->
     msg.http("http://#{apiEndpoint}/info")
       .get() (err, res, body) ->
         switch res.statusCode
-            when 200
-                try
-                  json = JSON.parse(body)
-                  msg.send "   CF Core Name: #{json.description}\n
+          when 200
+            try
+              json = JSON.parse(body)
+              msg.send "   CF Core Name: #{json.description}\n
       product: #{json.name}\n
       version: #{json.version}\n
         build: #{json.build}\n"
-                catch error
-                  msg.send "Insufficient JSON ninjas available"
-            else
-                msg.send "Unable to process your request. Needs more ice cream."
-
+            catch error
+              msg.send "Insufficient JSON ninjas available"
+          else
+            msg.send "Unable to process your request. Needs more ice cream."
 
 # ideas TODO:
 # add additional operations
 # - list runtimes on core
-# - .com platform status

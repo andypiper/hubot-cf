@@ -4,9 +4,13 @@ Adds a number of (hopefully) helpful [Cloud Foundry](http://cloudfoundry.org)-re
 
 #### Commands:
 
-Return CF Core information about the specified *API endpoint* 
+Return [Cloud Foundry Core](http://core.cloudfoundry.com) information about the specified *API endpoint* 
     
     hubot cf-core <API endpoint>        
+
+Return information about the status of cloudfoundry.com (via the [Status blog](http://status.cloudfoundry.com))
+
+    hubot cf-status
 
 Return the most recent tweet from the [@cloudfoundry Twitter account](http://twitter.com/cloudfoundry)
 
