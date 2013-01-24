@@ -63,8 +63,3 @@ module.exports = (robot) ->
           else
               msg.send "Unable to process your request. Needs more ice cream."
 
-
-
-# ideas TODO:
-# add additional operations
-# - list runtimes on core
