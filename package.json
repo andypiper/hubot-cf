@@ -11,7 +11,9 @@
    { "type": "Apache",
      "url": "http://www.apache.org/licenses/LICENSE-2.0" },
   "dependencies": {
-    "coffee-script": "~> 1.4.0"
+    "coffee-script": "~> 1.4.0",
+    "mu2": "*",
+    "underscore": ""
   },
   "keywords": [ "cloudfoundry", "cloud", "vcap", "status" ],
   "license": "Apache 2",

@@ -1,0 +1,10 @@
+CF Core Name: {{description}}
+  product: {{name}}
+  version: {{version}}
+  build: {{build}}
+
+  frameworks:{{#frameworks}}
+    {{name}}{{/frameworks}}
+
+  runtimes:{{#runtimes}}
+    {{name}}{{/runtimes}}
