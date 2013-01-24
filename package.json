@@ -1,6 +1,6 @@
 {
   "name": "hubot-cf",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Some useful Cloud Foundry scripts for hubot",
   "main": "index.coffee",
   "author": "Andy Piper <andypiperuk@gmail.com> (http://andypiper.co.uk)",
