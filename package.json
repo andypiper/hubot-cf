@@ -7,9 +7,10 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/andypiper/hubot-cf"
-  },  "licenses":
-   { "type": "Apache",
-     "url": "http://www.apache.org/licenses/LICENSE-2.0" },
+  },
+  "licenses": {
+    "type": "Apache",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0" },
   "dependencies": {
     "coffee-script": "~> 1.4.0",
     "mu2": "*",
