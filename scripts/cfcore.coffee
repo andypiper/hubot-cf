@@ -2,7 +2,8 @@
 #   Useful Cloud Foundry Core-related functions for hubot
 #
 # Dependencies:
-#   None
+#   "mu2": "*"
+#   "underscore": "*"
 #
 # Configuration:
 #   None
@@ -14,8 +15,9 @@
 #   None
 #
 # Author:
-#   andypiper
+#   andypiper, danhigham
 #
+
 mu = require 'mu2'
 util = require 'util'
 _ = require 'underscore'

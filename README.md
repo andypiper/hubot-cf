@@ -30,6 +30,8 @@ Add an entry for ```hubot-cf``` to the ```external-scripts.json``` file (you may
 
     ["hubot-cf"]
     
+Add dependencies to your hubot ```package.json``` file (check the scripts for the ones required).
+
 Run hubot as normal, and the scripts should become available.
 
 #### License:

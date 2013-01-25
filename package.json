@@ -1,6 +1,6 @@
 {
   "name": "hubot-cf",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Some useful Cloud Foundry scripts for hubot",
   "main": "index.coffee",
   "author": "Andy Piper <andypiperuk@gmail.com> (http://andypiper.co.uk)",
@@ -14,7 +14,7 @@
   "dependencies": {
     "coffee-script": "~> 1.4.0",
     "mu2": "*",
-    "underscore": ""
+    "underscore": "*"
   },
   "keywords": [ "cloudfoundry", "cloud", "vcap", "status" ],
   "license": "Apache 2",
