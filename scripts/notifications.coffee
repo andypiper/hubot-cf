@@ -16,6 +16,7 @@
 childProcess = require('child_process')
 request = require('request')
 
+
 # token = process.env.HUBOT_CF_ACCESS_TOKEN || throw new Error("Please set HUBOT_CF_ACCESS_TOKEN.")
 
 # hack to get the up-to-date token - requires Node 0.12+
@@ -50,8 +51,10 @@ printDeployEvents = (since, callback) ->
   getDeployEvents since, (error, data) ->
     for event in data.resources
       entity = event.entity
-      deployedAt = new Date(entity.timestamp)
-      console.log("#{entity.actor_name} deployed #{entity.actee_name} at #{deployedAt}")
+      # A mediocre proxy for an existin app being `push`ed, though it has false positives like new instances starting.
+      # TODO check for a previous 'STOPPED'
+      if entity?.metadata?.request?.state is 'STARTED'
+        console.log("#{entity.actor_name} is deploying #{entity.actee_name}")
 
 
 # poll for deployment events
