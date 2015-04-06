@@ -21,21 +21,49 @@ request = require('request')
 # hack to get the up-to-date token - requires Node 0.12+
 token = childProcess.execSync('cf oauth-token | tail -n 1').toString()
 
-opts = {
-  url: 'http://api.cf.18f.us/v2/events'
-  json: true
-  headers:
-    Authorization: token
-  qs:
-    'order-direction': 'desc'
-    q: 'type:audit.app.update'
-}
 
-request opts, (error, response, data) ->
-  for event in data.resources
-    entity = event.entity
-    deployedAt = new Date(entity.timestamp)
-    console.log("#{entity.actor_name} deployed #{entity.actee_name} at #{deployedAt}")
+getRequestOpts = (since) ->
+  sinceStr = since.toISOString()
+
+  opts = {
+    url: 'http://api.cf.18f.us/v2/events'
+    json: true
+    headers:
+      Authorization: token
+    useQuerystring: true
+    qs:
+      'order-direction': 'desc'
+      q: [
+        "timestamp>#{sinceStr}"
+        'type:audit.app.update'
+      ]
+  }
+
+
+getDeployEvents = (since, callback) ->
+  opts = getRequestOpts(since)
+  request opts, (error, response, data) ->
+    callback(error, data)
+
+
+printDeployEvents = (since, callback) ->
+  getDeployEvents since, (error, data) ->
+    for event in data.resources
+      entity = event.entity
+      deployedAt = new Date(entity.timestamp)
+      console.log("#{entity.actor_name} deployed #{entity.actee_name} at #{deployedAt}")
+
+
+# poll for deployment events
+lastCheckedAt = new Date()
+setInterval(->
+  console.log('Checking...')
+  printDeployEvents(lastCheckedAt)
+  lastCheckedAt = new Date()
+, 5000)
+
+
+
 
 
 # module.exports = (robot) ->
