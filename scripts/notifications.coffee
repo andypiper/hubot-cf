@@ -17,10 +17,13 @@ childProcess = require('child_process')
 request = require('request')
 
 
+# TODO use a static token
 # token = process.env.HUBOT_CF_ACCESS_TOKEN || throw new Error("Please set HUBOT_CF_ACCESS_TOKEN.")
 
-# hack to get the up-to-date token - requires Node 0.12+
-token = childProcess.execSync('cf oauth-token | tail -n 1').toString()
+# hack to get the up-to-date bearer token
+token = null
+childProcess.exec 'cf oauth-token | tail -n 1', (error, stdout, stderr) ->
+  token = stdout.toString()
 
 
 getRequestOpts = (since) ->
@@ -61,18 +64,16 @@ getDeployEntities = (since, callback) ->
 
 
 
-# poll for deployment events
-lastCheckedAt = new Date()
-
-setInterval(->
-  console.log('Checking...')
-
-  getDeployEntities lastCheckedAt, (error, entities) ->
-    for entity in entities
-      console.log("#{entity.actor_name} is deploying #{entity.actee_name}")
-
+module.exports = (robot) ->
+  # poll for deployment events
   lastCheckedAt = new Date()
-, 5000)
 
+  setInterval(->
+    getDeployEntities lastCheckedAt, (error, entities) ->
+      for entity in entities
+        # TODO room mappings
+        envelope = {room: 'cf-notifications'}
+        robot.send(envelope, "#{entity.actor_name} is deploying #{entity.actee_name}")
 
-# module.exports = (robot) ->
+    lastCheckedAt = new Date()
+  , 5000)
