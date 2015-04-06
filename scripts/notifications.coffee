@@ -33,7 +33,6 @@ getRequestOpts = (since) ->
       Authorization: token
     useQuerystring: true
     qs:
-      'order-direction': 'desc'
       q: [
         "timestamp>#{sinceStr}"
         'type:audit.app.update'
