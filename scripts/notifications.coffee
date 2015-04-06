@@ -1,9 +1,6 @@
 # Description:
 #   Sends notifications of Cloud Foundry activity.
 #
-# Dependencies:
-#   "<module name>": "<module version>"
-#
 # Configuration:
 #   HUBOT_CF_ACCESS_TOKEN
 #
@@ -26,6 +23,7 @@ childProcess.exec 'cf oauth-token | tail -n 1', (error, stdout, stderr) ->
   token = stdout.toString()
 
 
+# http://apidocs.cloudfoundry.org/205/events/list_app_update_events.html
 getRequestOpts = (since) ->
   sinceStr = since.toISOString()
   {
@@ -71,7 +69,7 @@ module.exports = (robot) ->
   setInterval(->
     getDeployEntities lastCheckedAt, (error, entities) ->
       for entity in entities
-        # TODO room mappings
+        # TODO map to particular rooms based on organization_guid
         envelope = {room: 'cf-notifications'}
         robot.send(envelope, "#{entity.actor_name} is deploying #{entity.actee_name}")
 
