@@ -40,31 +40,39 @@ getRequestOpts = (since) ->
   }
 
 
-getDeployEvents = (since, callback) ->
+getUpdateEvents = (since, callback) ->
   opts = getRequestOpts(since)
   request opts, (error, response, data) ->
     callback(error, data.resources)
 
 
-printDeployEvents = (since, callback) ->
-  getDeployEvents since, (error, events) ->
-    for event in events
-      entity = event.entity
-      # A mediocre proxy for an existing app being `push`ed, since it has false positives like new instances starting.
-      if entity.metadata?.request?.state is 'STARTED'
-        console.log("#{entity.actor_name} is deploying #{entity.actee_name}")
+isDeploy = (event) ->
+  # a mediocre proxy for an existing app being `push`ed, since it has false positives like new instances starting
+  event.entity.metadata?.request?.state is 'STARTED'
+
+
+getDeployEntities = (since, callback) ->
+  getUpdateEvents since, (error, events) ->
+    if error
+      callback(error)
+    else
+      entities = (event.entity for event in events when isDeploy(event))
+      callback(null, entities)
+
 
 
 # poll for deployment events
 lastCheckedAt = new Date()
+
 setInterval(->
   console.log('Checking...')
-  printDeployEvents(lastCheckedAt)
+
+  getDeployEntities lastCheckedAt, (error, entities) ->
+    for entity in entities
+      console.log("#{entity.actor_name} is deploying #{entity.actee_name}")
+
   lastCheckedAt = new Date()
 , 5000)
-
-
-
 
 
 # module.exports = (robot) ->
