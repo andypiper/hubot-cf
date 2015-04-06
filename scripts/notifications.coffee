@@ -28,10 +28,14 @@ opts = {
     Authorization: token
   qs:
     'order-direction': 'desc'
+    q: 'type:audit.app.update'
 }
 
-request opts, (error, response, body) ->
-  console.log(body)
+request opts, (error, response, data) ->
+  for event in data.resources
+    entity = event.entity
+    deployedAt = new Date(entity.timestamp)
+    console.log("#{entity.actor_name} deployed #{entity.actee_name} at #{deployedAt}")
 
 
 # module.exports = (robot) ->
