@@ -25,8 +25,7 @@ token = childProcess.execSync('cf oauth-token | tail -n 1').toString()
 
 getRequestOpts = (since) ->
   sinceStr = since.toISOString()
-
-  opts = {
+  {
     url: 'http://api.cf.18f.us/v2/events'
     json: true
     headers:
@@ -44,16 +43,15 @@ getRequestOpts = (since) ->
 getDeployEvents = (since, callback) ->
   opts = getRequestOpts(since)
   request opts, (error, response, data) ->
-    callback(error, data)
+    callback(error, data.resources)
 
 
 printDeployEvents = (since, callback) ->
-  getDeployEvents since, (error, data) ->
-    for event in data.resources
+  getDeployEvents since, (error, events) ->
+    for event in events
       entity = event.entity
-      # A mediocre proxy for an existin app being `push`ed, though it has false positives like new instances starting.
-      # TODO check for a previous 'STOPPED'
-      if entity?.metadata?.request?.state is 'STARTED'
+      # A mediocre proxy for an existing app being `push`ed, since it has false positives like new instances starting.
+      if entity.metadata?.request?.state is 'STARTED'
         console.log("#{entity.actor_name} is deploying #{entity.actee_name}")
 
 
