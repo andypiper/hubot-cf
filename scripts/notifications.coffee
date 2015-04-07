@@ -2,30 +2,27 @@
 #   Sends notifications of Cloud Foundry activity.
 #
 # Configuration:
-#   HUBOT_CF_ACCESS_TOKEN
+#   HUBOT_CF_CLIENT_ID
+#   HUBOT_CF_CLIENT_SECRET
 #
 # Notes:
-#   Get the access token via `cf oauth-token` from the CLI, including the 'bearer'.
+#   Create the client credentials via `uaac client add hubot-cf --scope uaa.none`
 #
 # Author:
 #   afeld
 
 childProcess = require('child_process')
 request = require('request')
+credentials = require('../src/credentials')
 
-
-# TODO use a static token
-# token = process.env.HUBOT_CF_ACCESS_TOKEN || throw new Error("Please set HUBOT_CF_ACCESS_TOKEN.")
-
-# hack to get the up-to-date bearer token
-token = null
-childProcess.exec 'cf oauth-token | tail -n 1', (error, stdout, stderr) ->
-  token = stdout.toString()
+credentials.fetchToken()
 
 
 # http://apidocs.cloudfoundry.org/205/events/list_app_update_events.html
 getRequestOpts = (since) ->
+  token = credentials.getToken()
   sinceStr = since.toISOString()
+
   {
     url: 'http://api.cf.18f.us/v2/events'
     json: true
@@ -59,9 +56,7 @@ getDeployEntities = (since, callback) ->
       entities = (event.entity for event in events when isDeploy(event))
       callback(null, entities)
 
-
-
-module.exports = (robot) ->
+notifyForDeploys = (robot) ->
   # poll for deployment events
   lastCheckedAt = new Date()
 
@@ -74,3 +69,7 @@ module.exports = (robot) ->
 
     lastCheckedAt = new Date()
   , 5000)
+
+
+module.exports = (robot) ->
+  notifyForDeploys(robot)
