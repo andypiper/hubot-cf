@@ -13,22 +13,14 @@
 
 childProcess = require('child_process')
 request = require('request')
-credentials = require('../src/credentials')
-
-credentials.fetchToken()
+client = require('../src/client')
 
 
 # http://apidocs.cloudfoundry.org/205/events/list_app_update_events.html
 getRequestOpts = (since) ->
-  token = credentials.getToken()
   sinceStr = since.toISOString()
-
   {
-    url: 'http://api.cf.18f.us/v2/events'
-    json: true
-    headers:
-      Authorization: token
-    useQuerystring: true
+    path: '/v2/events'
     qs:
       q: [
         "timestamp>#{sinceStr}"
@@ -39,7 +31,7 @@ getRequestOpts = (since) ->
 
 getUpdateEvents = (since, callback) ->
   opts = getRequestOpts(since)
-  request opts, (error, response, data) ->
+  client.get opts, (error, response, data) ->
     callback(error, data.resources)
 
 
