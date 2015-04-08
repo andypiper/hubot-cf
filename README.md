@@ -1,12 +1,12 @@
-## Hubot Cloud Foundry helpers 
+## Hubot Cloud Foundry helpers
 
 Adds a number of (hopefully) helpful [Cloud Foundry](http://cloudfoundry.org)-related status commands to [hubot](http://hubot.github.com)
 
 #### Commands:
 
-Return [Cloud Foundry Core](http://core.cloudfoundry.com) information about the specified *API endpoint* 
-    
-    hubot cf-core <API endpoint>        
+Return [Cloud Foundry Core](http://core.cloudfoundry.com) information about the specified *API endpoint*
+
+    hubot cf-core <API endpoint>
 
 Return information about the status of cloudfoundry.com (via the [Status blog](http://status.cloudfoundry.com))
 
@@ -18,21 +18,22 @@ Return the most recent tweet from the [@cloudfoundry Twitter account](http://twi
 
 (more commands coming soon)
 
+#### Notifications:
+
+See the instructions at the top of [`notifications.coffee`](scripts/notifications.coffee) to
+
 #### Installation:
 
-**npm module method**
+1. In your deployed `hubot` directory:
 
-In your deployed ```hubot``` directory:
+        npm install hubot-cf --save
 
-    npm install hubot-cf
+1. Add an entry for `hubot-cf` to the `external-scripts.json` file (you may need to create this file, if it is not present):
 
-Add an entry for ```hubot-cf``` to the ```external-scripts.json``` file (you may need to create this file, if it is not present):
+        ["hubot-cf"]
 
-    ["hubot-cf"]
-    
-Add dependencies to your hubot ```package.json``` file (check the scripts for the ones required).
-
-Run hubot as normal, and the scripts should become available.
+1. Follow the configuration instructions at the top of [`notifications.coffee`](scripts/notifications.coffee).
+1. Run hubot as normal, and the scripts should become available.
 
 #### License:
 
