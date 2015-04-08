@@ -6,11 +6,13 @@
 #   HUBOT_CF_PASS
 #   HUBOT_CF_API_ORIGIN
 #   HUBOT_CF_UAA_ORIGIN
+#   HUBOT_CF_ROOM (default to `cf-notifications`)
 #
 # Notes:
 #   Create the client credentials via:
 #
 #     cf create-user hubot-cf-listener <password>
+#     # add read-only permissions for the appropriate orgs/spaces
 #     cf set-org-role hubot-cf-listener <org> OrgAuditor
 #
 #   then set HUBOT_CF_USER and HUBOT_CF_PASS.
@@ -54,6 +56,10 @@ getDeployEntities = (since, callback) ->
       entities = (event.entity for event in events when isDeploy(event))
       callback(null, entities)
 
+roomFor = (entity) ->
+  # TODO map to particular rooms based on organization_guid
+  process.env.HUBOT_CF_ROOM || 'cf-notifications'
+
 notifyForDeploys = (robot) ->
   # poll for deployment events
   lastCheckedAt = new Date()
@@ -61,8 +67,9 @@ notifyForDeploys = (robot) ->
   setInterval(->
     getDeployEntities lastCheckedAt, (error, entities) ->
       for entity in entities
-        # TODO map to particular rooms based on organization_guid
-        envelope = {room: 'cf-notifications'}
+        envelope = {
+          room: roomFor(entity)
+        }
         robot.send(envelope, "#{entity.actor_name} is deploying #{entity.actee_name}")
 
     lastCheckedAt = new Date()
