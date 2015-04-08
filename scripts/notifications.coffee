@@ -4,6 +4,8 @@
 # Configuration:
 #   HUBOT_CF_USER
 #   HUBOT_CF_PASS
+#   HUBOT_CF_API_ORIGIN
+#   HUBOT_CF_UAA_ORIGIN
 #
 # Notes:
 #   Create the client credentials via:

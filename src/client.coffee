@@ -3,13 +3,12 @@ request = require('request')
 credentials = require('../src/credentials')
 
 
-# TODO make configurable
-apiOrigin = 'http://api.cf.18f.us'
-
-
 module.exports = {
+  apiOrigin: ->
+    process.env.HUBOT_CF_API_ORIGIN || throw new Error("Please set HUBOT_CF_API_ORIGIN.")
+
   resolveUrl: (path) ->
-    apiOrigin + path
+    @apiOrigin() + path
 
   generalRequestOpts: (accessToken) ->
     {

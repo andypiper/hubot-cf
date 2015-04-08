@@ -9,16 +9,13 @@ module.exports = {
   password: ->
     process.env.HUBOT_CF_PASS || throw new Error("Please set HUBOT_CF_PASS.")
 
-  site: ->
-    # don't break when encountering self-signed certs
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    # TODO make configurable
-    'https://uaa.cf.18f.us'
+  uaaOrigin: ->
+    process.env.HUBOT_CF_UAA_ORIGIN || throw new Error("Please set HUBOT_CF_UAA_ORIGIN.")
 
   requestOpts: ->
     # https://gist.github.com/ozzyjohnson/6ae51e3fdebc8a839751
     {
-      url: @site() + '/oauth/token'
+      url: @uaaOrigin() + '/oauth/token'
       method: 'POST'
       json: true
       headers:
