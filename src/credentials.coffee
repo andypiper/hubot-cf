@@ -1,8 +1,6 @@
 # https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-APIs.rst#access-token-administration-apis
 # http://andreareginato.github.io/simple-oauth2/#getting-started/client-credentials-flow
 
-token = null
-
 module.exports = {
   clientId: ->
     process.env.HUBOT_CF_CLIENT_ID || throw new Error("Please set HUBOT_CF_CLIENT_ID.")
@@ -12,13 +10,15 @@ module.exports = {
 
   site: ->
     # TODO make configurable
-    'http://login.cf.18f.us'
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    "https://#{@clientId()}:#{@clientSecret()}@uaa.cf.18f.us"
 
   credentials: ->
     {
       clientID: @clientId()
       clientSecret: @clientSecret()
       site: @site()
+      useBasicAuthorizationHeader: true
       # TODO set endpoints
     }
 
@@ -27,18 +27,17 @@ module.exports = {
     require('simple-oauth2')(creds)
 
   # TODO use promises
-  fetchToken: ->
+  fetchTokenObj: (callback) ->
     oauth2 = @oauth2Instance()
-    oauth2.client.getToken({}, @saveToken.bind(@))
-
-  getToken: ->
-    token
-
-  saveToken: (error, result) ->
-    if error
-      console.log('Access Token Error', error.message)
-    else
-      # TODO don't re-create
-      oauth2 = @oauth2Instance()
-      token = oauth2.accessToken.create(result)
+    # TODO check if needed
+    opts = {
+      client_id: 'cf'
+      scope: 'uaa.none'
+    }
+    oauth2.client.getToken opts, (error, result) ->
+      if error
+        console.log('Access Token Error', error.message)
+      else
+        token = oauth2.accessToken.create(result)
+        callback(token)
 }

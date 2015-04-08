@@ -3,7 +3,6 @@ request = require('request')
 credentials = require('../src/credentials')
 
 
-credentials.fetchToken()
 # TODO make configurable
 apiOrigin = 'http://api.cf.18f.us'
 
@@ -12,22 +11,22 @@ module.exports = {
   resolveUrl: (path) ->
     apiOrigin + path
 
-  generalRequestOpts: ->
-    token = credentials.getToken()
+  generalRequestOpts: (accessToken) ->
     {
       json: true
       headers:
-        Authorization: token
+        Authorization: "Bearer #{accessToken}"
       useQuerystring: true
     }
 
   get: (opts, callback) ->
-    allOpts = @generalRequestOpts()
-    deepExtend(allOpts, opts)
+    credentials.fetchTokenObj (token) =>
+      allOpts = @generalRequestOpts(token.token.access_token)
+      deepExtend(allOpts, opts)
 
-    if allOpts.path
-      allOpts.url = @resolveUrl(opts.path)
-      allOpts.path = null
+      if allOpts.path
+        allOpts.url = @resolveUrl(opts.path)
+        delete allOpts.path
 
-    request(allOpts, callback)
+      request(allOpts, callback)
 }
