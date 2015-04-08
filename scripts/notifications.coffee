@@ -30,7 +30,7 @@ getRequestOpts = (since) ->
 
 getUpdateEvents = (since, callback) ->
   opts = getRequestOpts(since)
-  client.get opts, (error, response, data) ->
+  client.call opts, (error, response, data) ->
     callback(error, data.resources)
 
 
