@@ -10,13 +10,21 @@
   },
   "licenses": {
     "type": "Apache",
-    "url": "http://www.apache.org/licenses/LICENSE-2.0" },
+    "url": "http://www.apache.org/licenses/LICENSE-2.0"
+  },
   "dependencies": {
     "coffee-script": "~> 1.4.0",
+    "deep-extend": "^0.3.3",
     "mu2": "*",
+    "request": "^2.55.0",
     "underscore": "*"
   },
-  "keywords": [ "cloudfoundry", "cloud", "vcap", "status" ],
+  "keywords": [
+    "cloudfoundry",
+    "cloud",
+    "vcap",
+    "status"
+  ],
   "license": "Apache 2",
   "readmeFilename": "README.md"
 }
