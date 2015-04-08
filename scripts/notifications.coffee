@@ -12,7 +12,6 @@
 #   afeld
 
 childProcess = require('child_process')
-request = require('request')
 client = require('../src/client')
 
 

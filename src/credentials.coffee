@@ -12,7 +12,7 @@ module.exports = {
 
   site: ->
     # TODO make configurable
-    'https://login.cf.18f.us'
+    'http://login.cf.18f.us'
 
   credentials: ->
     {
@@ -29,7 +29,7 @@ module.exports = {
   # TODO use promises
   fetchToken: ->
     oauth2 = @oauth2Instance()
-    oauth2.client.getToken({}, saveToken)
+    oauth2.client.getToken({}, @saveToken.bind(@))
 
   getToken: ->
     token
@@ -37,5 +37,8 @@ module.exports = {
   saveToken: (error, result) ->
     if error
       console.log('Access Token Error', error.message)
-    token = oauth2.accessToken.create(result)
+    else
+      # TODO don't re-create
+      oauth2 = @oauth2Instance()
+      token = oauth2.accessToken.create(result)
 }

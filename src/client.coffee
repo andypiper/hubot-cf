@@ -1,4 +1,5 @@
 deepExtend = require('deep-extend')
+request = require('request')
 credentials = require('../src/credentials')
 
 
@@ -21,12 +22,12 @@ module.exports = {
     }
 
   get: (opts, callback) ->
-    allOpts = generalRequestOpts()
+    allOpts = @generalRequestOpts()
     deepExtend(allOpts, opts)
 
     if allOpts.path
       allOpts.url = @resolveUrl(opts.path)
-      appOpts.path = null
+      allOpts.path = null
 
     request(allOpts, callback)
 }
