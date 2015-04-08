@@ -1,43 +1,40 @@
-# https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-APIs.rst#access-token-administration-apis
-# http://andreareginato.github.io/simple-oauth2/#getting-started/client-credentials-flow
+# https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-APIs.rst#support-for-additional-authorization-attributes
+request = require('request')
+
 
 module.exports = {
-  clientId: ->
-    process.env.HUBOT_CF_CLIENT_ID || throw new Error("Please set HUBOT_CF_CLIENT_ID.")
+  username: ->
+    process.env.HUBOT_CF_USER || throw new Error("Please set HUBOT_CF_USER.")
 
-  clientSecret: ->
-    process.env.HUBOT_CF_CLIENT_SECRET || throw new Error("Please set HUBOT_CF_CLIENT_SECRET.")
+  password: ->
+    process.env.HUBOT_CF_PASS || throw new Error("Please set HUBOT_CF_PASS.")
 
   site: ->
-    # TODO make configurable
+    # don't break when encountering self-signed certs
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    "https://#{@clientId()}:#{@clientSecret()}@uaa.cf.18f.us"
+    # TODO make configurable
+    'https://uaa.cf.18f.us'
 
-  credentials: ->
+  requestOpts: ->
+    # https://gist.github.com/ozzyjohnson/6ae51e3fdebc8a839751
     {
-      clientID: @clientId()
-      clientSecret: @clientSecret()
-      site: @site()
-      useBasicAuthorizationHeader: true
-      # TODO set endpoints
+      url: @site() + '/oauth/token'
+      method: 'POST'
+      json: true
+      headers:
+        authorization: 'Basic Y2Y6'
+      form:
+        grant_type: 'password'
+        username: @username()
+        password: @password()
     }
-
-  oauth2Instance: ->
-    creds = @credentials()
-    require('simple-oauth2')(creds)
 
   # TODO use promises
   fetchTokenObj: (callback) ->
-    oauth2 = @oauth2Instance()
-    # TODO check if needed
-    opts = {
-      client_id: 'cf'
-      scope: 'uaa.none'
-    }
-    oauth2.client.getToken opts, (error, result) ->
+    opts = @requestOpts()
+    request opts, (error, response, token) ->
       if error
-        console.log('Access Token Error', error.message)
+        console.log('Access Token Error', error)
       else
-        token = oauth2.accessToken.create(result)
         callback(token)
 }
